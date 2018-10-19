@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+    
+<html lang="en" ng-app="todoApp">
+
+    <head>
+        <title>Todo List</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>  
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="todo.js"></script>
+        <script src="todoController.js"></script>
+        
+        <script>
+            $(document).ready(function(){
+                $('.modal').modal();
+            });
+        </script>
+        
+    </head>
+    
+    <body ng-controller="todoController as todoController" ng-init="todoController.init()">
+        
+        <nav class="teal lighten-1">
+            <div class="nav-wrapper">
+                <span class="brand-logo center">Todo List</span>
+            </div>
+        </nav>
+        
+        <div class="container">
+            
+            <div class="row">
+                <div class="col s12 l12">
+                    <table class="striped centered">
+                        <thead>
+                            <tr>
+                                <th class="grey-text text-darken-1">Title</th>
+                                <th class="grey-text text-darken-1">Description</th>
+                                <th class="grey-text text-darken-1">Completed</th>
+                                <th><a data-target="modal1" class="hide-on-small-only btn btn-large waves-effect waves-light teal lighten-1 modal-trigger"><i class="material-icons">add</i></a></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="todo in todoController.todoList track by $index" ng-class="{'strike': todoController.disableRow($index)}">
+                                <td>{{todo.title}}</td>
+                                <td>{{todo.description}}</td>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" ng-model="todo.completed" ng-click="todoController.updateList($index)"/>
+                                        <span></span>
+                                    </label>    
+                                </td>
+                                <td ng-click="todoController.deleteTodo($index)"><a href=""><i class="material-icons grey-text text-darken-1">delete</i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+ 
+                </div>
+
+            </div>
+            
+            <br>
+
+            <div class="fixed-action-btn hide-on-large-only">
+                <a data-target="modal1" class="btn-floating btn-large waves-effect waves-light teal lighten-1 modal-trigger"><i class="material-icons">add</i></a>
+            </div>
+            
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    
+                    <form ng-submit="todoController.addTodo()">
+                        <div class="row">
+                            <div class="input-field col s12 l12">
+                                <input ng-model="todoController.title" id="title" type="text" required>
+                                <label for="title">Title</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12 l12">
+                                <input ng-model="todoController.description" id="desc" type="text" required>
+                                <label for="desc">Description</label>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="submit" ng-class="{'modal-close': todoController.isValid()}" class="waves-effect waves-green btn-flat">Add</button>
+                        </div>
+                        
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+    </body>
+    
+</html>
